@@ -25,14 +25,8 @@ trait EqInstances{
   implicit def seqEq[A: Eq]: Eq[Seq[A]] = (lft: Seq[A], rgt: Seq[A]) => {
     if (lft.size != rgt.size)
       false
-    else {
-      val zipped = lft.zip(rgt)
-      for (pair <- zipped) {
-        if (!(pair._1 ==== pair._2))
-          false
-      }
-      true
-    }
+    else
+      (lft, rgt).zipped.forall(_ ==== _)
   }
 
   implicit def optionEq[A: Eq]: Eq[Option[A]] = (lft: Option[A], rgt: Option[A]) => {
